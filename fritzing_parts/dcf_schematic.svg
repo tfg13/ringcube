@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<!-- Created with Fritzing (http://www.fritzing.org/) -->
+<svg xmlns="http://www.w3.org/2000/svg" width="0.6in" x="0in" version="1.2" y="0in"  height="0.3in" viewBox="0 0 600 300" baseProfile="tiny" xmlns:svg="http://www.w3.org/2000/svg">
+    <desc>
+        <referenceFile>generic_ic_dip_4_schem.svg</referenceFile>
+    </desc>
+    <g  id="schematic">
+        <rect width="193.75" x="200" y="6.25" fill="none"  height="287.5" stroke="#000000" stroke-linejoin="round" stroke-linecap="round" stroke-width="12.5"/>
+        <text x="300" y="100" font-family="'Droid Sans'" fill="#000000"  text-anchor="middle" stroke="none" id="label" font-size="48.6111">IC</text>
+        <line fill="none"  stroke="#787878" stroke-linejoin="round" stroke-linecap="round" y1="100" stroke-width="9.7222" x1="4.8611" y2="100" x2="200"/>
+        <rect width="200" x="0" y="95.1389" fill="none"  height="9.7222" id="connector0pin" stroke-width="0" connectorName="1"/>
+        <rect width="0" x="0" y="95.1389" fill="none"  height="9.7222" id="connector0terminal" stroke-width="0"/>
+        <text x="219.444" y="109.722" font-family="'Droid Sans'" fill="#8c8c8c"  text-anchor="start" stroke="none" id="label0" font-size="38">SIG</text>
+        <text x="100" y="85.4167" class="text" font-family="Droid Sans" fill="#8c8c8c"  text-anchor="middle" stroke="none" stroke-width="0" font-size="34.7222">1</text>
+        <line fill="none"  stroke="#787878" stroke-linejoin="round" stroke-linecap="round" y1="200" stroke-width="9.7222" x1="4.8611" y2="200" x2="200"/>
+        <rect width="200" x="0" y="195.139" fill="none"  height="9.7222" id="connector1pin" stroke-width="0" connectorName="2"/>
+        <rect width="0" x="0" y="195.139" fill="none"  height="9.7222" id="connector1terminal" stroke-width="0"/>
+        <text x="219.444" y="209.722" font-family="'Droid Sans'" fill="#8c8c8c"  text-anchor="start" stroke="none" id="label1" font-size="38">PON</text>
+        <text x="100" y="185.417" class="text" font-family="Droid Sans" fill="#8c8c8c"  text-anchor="middle" stroke="none" stroke-width="0" font-size="34.7222">2</text>
+        <line fill="none"  stroke="#787878" stroke-linejoin="round" stroke-linecap="round" y1="100" stroke-width="9.7222" x1="395.139" y2="100" x2="595.139"/>
+        <rect width="200" x="400" y="95.1389" fill="none"  connectorname="4" height="9.7222" id="connector3pin" stroke-width="0"/>
+        <rect width="0" x="600" y="95.1389" fill="none"  height="9.7222" id="connector3terminal" stroke-width="0"/>
+        <text x="380.556" y="109.722" font-family="'Droid Sans'" fill="#8c8c8c"  text-anchor="end" stroke="none" id="label3" font-size="38">GND</text>
+        <text x="500" y="85.4167" class="text" font-family="Droid Sans" fill="#8c8c8c"  text-anchor="middle" stroke="none" stroke-width="0" font-size="34.7222">4</text>
+        <line fill="none"  stroke="#787878" stroke-linejoin="round" stroke-linecap="round" y1="200" stroke-width="9.7222" x1="395.139" y2="200" x2="595.139"/>
+        <rect width="200" x="400" y="195.139" fill="none"  connectorname="3" height="9.7222" id="connector2pin" stroke-width="0"/>
+        <rect width="0" x="600" y="195.139" fill="none"  height="9.7222" id="connector2terminal" stroke-width="0"/>
+        <text x="380.556" y="209.722" font-family="'Droid Sans'" fill="#8c8c8c"  text-anchor="end" stroke="none" id="label2" font-size="38">VCC</text>
+        <text x="500" y="185.417" class="text" font-family="Droid Sans" fill="#8c8c8c"  text-anchor="middle" stroke="none" stroke-width="0" font-size="34.7222">3</text>
+    </g>
+</svg>
