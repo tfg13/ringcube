@@ -74,7 +74,7 @@ void deepsleep_internal() {
   MCUCR = bit (BODS) | bit (BODSE);  // turn on brown-out enable select
   MCUCR = bit (BODS);        // this must be done within 4 clock cycles of above
   interrupts();
-  sleep_cpu ();              // sleep within 3 clock cycles of above
+  sleep_cpu ();    // sleep within 3 clock cycles of above
   
   // begin re-enabling stuff
   // power rtc

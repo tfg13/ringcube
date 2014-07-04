@@ -8,11 +8,13 @@ void ring() {
   tmrpcm.speakerPin = 9;
   audioamp.enableChannel(true, false);
   audioamp.setLimitLevel(5);
-  audioamp.setGain(0);
+  audioamp.setGain(4);
   
+  SPI.begin();
   if (!SD.begin(P_SD_CS)) {  // see if the card is present and can be initialized:
     // todo: better handling
-    displayFull('6666');
+    displayFull(6666);
+    delay(500);
     return;   // don't do anything more if not
   }
   tmrpcm.setVolume(3);
@@ -21,4 +23,5 @@ void ring() {
 
 void silence() {
   tmrpcm.disable();
+  SPI.end();
 }

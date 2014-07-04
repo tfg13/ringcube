@@ -60,9 +60,9 @@ void setupPins() {
   pinMode(P_SD_CS, OUTPUT);
   pinMode(P_SD_POWER, OUTPUT);
   pinMode(I_LIGHT_INTERRUPT, INPUT);
-  pinMode(I_LEFT, INPUT);
-  pinMode(I_MIDDLE, INPUT);
-  pinMode(I_RIGHT, INPUT);
+  pinMode(I_LEFT, INPUT_PULLUP);
+  pinMode(I_MIDDLE, INPUT_PULLUP);
+  pinMode(I_RIGHT, INPUT_PULLUP);
 
   // disable everything except rtc
   digitalWrite(P_DISPLAY_POWER, LOW);
