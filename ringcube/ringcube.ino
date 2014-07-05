@@ -9,7 +9,7 @@
 #include <Adafruit_TPA2016.h>
 #include <TMRpcm.h>
 #include <SPI.h>
-#include <SD.h>
+#include <SdFat.h>
 #include <DS3231.h>
 
 

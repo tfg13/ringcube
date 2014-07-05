@@ -1,6 +1,8 @@
 // music playback stuff
 #include <Wire.h>
 
+SdFat sd;
+
 Adafruit_TPA2016 audioamp = Adafruit_TPA2016();
 TMRpcm tmrpcm;   // create an object for use in this sketch
 
@@ -11,7 +13,7 @@ void ring() {
   audioamp.setGain(4);
   
   SPI.begin();
-  if (!SD.begin(P_SD_CS)) {  // see if the card is present and can be initialized:
+  if (!sd.begin(P_SD_CS, SPI_HALF_SPEED)) {  // see if the card is present and can be initialized:
     // todo: better handling
     displayFull(6666);
     delay(500);
