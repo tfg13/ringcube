@@ -10,8 +10,14 @@ void resetWakeupTimer() {
   if (alarm) {
     rtc.setA2Time(0, alarmHour, alarmMinute, 0b01000000, false, false, false);
     rtc.turnOnAlarm(2);
-    rtc.checkIfAlarm(2);
   } else {
     rtc.turnOffAlarm(2);
   }
+  // retrieve alarm flag, otherwise the previous alarm may still be active
+  rtc.checkIfAlarm(2);
+}
+
+void disableAlarm() {
+  rtc.turnOffAlarm(2);
+  rtc.checkIfAlarm(2);
 }

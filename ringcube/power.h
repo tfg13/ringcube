@@ -76,19 +76,16 @@ void deepsleep_internal() {
   interrupts();
   sleep_cpu ();    // sleep within 3 clock cycles of above
   
+  // re-enable I2C & SPI
+  PRR &= (1<<PRTIM0) | (1<<PRTIM1) | (1<<PRTIM2) | (1<<PRADC) | (1<<PRUSART0);
+
+  disableAlarm();
+
   // begin re-enabling stuff
   // power rtc
   digitalWrite (P_RTC_POWER, HIGH);
   
-  // re-enable I2C & SPI
-  PRR &= (1<<PRTIM0) | (1<<PRTIM1) | (1<<PRTIM2) | (1<<PRADC) | (1<<PRUSART0);
   Wire.begin();
-  
-  // RE-ENABLE SD? (only when powermode is ringing?)
-  
-  // re-enable ADC
-  // TODO: Is this required?
-  //ADCSRA = (1<<ADEN);
 }
 
 /**
