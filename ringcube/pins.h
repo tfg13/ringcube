@@ -73,8 +73,8 @@ void setupPins() {
   // disable everything except rtc
   digitalWrite(P_DISPLAY_POWER, LOW);
   digitalWrite(P_DCF_POWER, LOW);
-  digitalWrite(P_AUDIO_SHUTDOWN, LOW)
-  digitalWrite(P_AUDIO_OUTPUT, LOW)
+  digitalWrite(P_AUDIO_SHUTDOWN, LOW);
+  digitalWrite(P_AUDIO_OUTPUT, LOW);
   digitalWrite(P_SD_CS, LOW);
   digitalWrite(P_SD_POWER, LOW);
 
