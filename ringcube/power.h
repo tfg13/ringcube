@@ -81,11 +81,10 @@ void deepsleep_internal() {
   // re-enable I2C & SPI
   PRR &= (1<<PRTIM0) | (1<<PRTIM1) | (1<<PRTIM2) | (1<<PRADC) | (1<<PRUSART0);
 
-  disableAlarm();
   // power rtc
   digitalWrite (P_RTC_POWER, HIGH);
   
-  Wire.begin();
+  disableAlarm();
 }
 
 /**
