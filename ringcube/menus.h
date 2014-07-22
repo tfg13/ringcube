@@ -191,7 +191,7 @@ void setAlarmMenu() {
 		    alarmHour = 20;
 		  }
 		} else {
-		  alarmHour = (alarmHour % 10) * 10;
+		  alarmHour = (alarmHour / 10) * 10;
 		}
 	      } else if (editing == 2) {
 		if (alarmMinute < 50) {
