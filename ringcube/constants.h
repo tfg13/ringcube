@@ -1,4 +1,4 @@
-// non-pin constants and compile-time settings
+// constants and compile-time settings
 
 /**
  * Power states

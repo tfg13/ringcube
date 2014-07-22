@@ -20,7 +20,7 @@ void ring() {
     return;   // don't do anything more if not
   }
   tmrpcm.setVolume(3);
-  tmrpcm.play("music"); //the sound file "music" will play each time the arduino powers up, or is reset
+  tmrpcm.play("music");
 }
 
 void silence() {

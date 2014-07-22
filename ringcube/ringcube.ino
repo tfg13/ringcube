@@ -12,7 +12,7 @@
 #include <SdFat.h>
 #include <DS3231.h>
 
-
+// object to access the real-time clock module, a Chronodot.
 DS3231 rtc = DS3231();
 
 #include "display.h"
@@ -26,13 +26,24 @@ uint8_t waketrigger;
 bool dummy;
 // if alarm is turned on
 bool alarm = false;
+// full hour of the alarm (24-hour format)
 int8_t alarmHour = 0;
+// minute of the alarm
 int8_t alarmMinute = 0;
 
 #include "menus.h"
 #include "timers.h"
 #include "power.h"
 
+/**
+ * Used for debouncing all buttons.
+ * This is called immediately after a button press is registered.
+ * It closely monitors the button and waits a bit to prevent oscillating
+ * or continued readings from being interpreted as yet another input.
+ *
+ * Works for all buttons that are low-active (which are all).
+ * Supply the pressed button as the first argument.
+ */
 void debounce(int pin) {
   delay(10);
   // wait for button release
@@ -46,12 +57,23 @@ void debounce(int pin) {
   delay(25);
 }
 
+/**
+ * Usual arduino setup funciton.
+ * Code starts running here.
+ * Does some initial pin-assignments.
+ * It is important to put the device to sleep shortly after, because the
+ * inital pin assigments are suboptimal and can waste a lot of power.
+ */
 void setup() {
   setupPins();
   // first start is like pressing the light button
   waketrigger = WAKEREASON_LIGHT;
 }
 
+/**
+ * Usual arduino main loop.
+ * This is repeatedly called after setup()
+ */
 void loop() {
   // device just woke up from deepsleep.
   // find out the reason for this

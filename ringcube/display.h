@@ -1,5 +1,7 @@
 #include "Arduino.h"
 
+// Helper functions for accessing the display
+
 /**
  * Sends the given value directly to the display.
  */

@@ -5,7 +5,7 @@
 // also guarantees that the system is never send to sleep without a wakeup-timer being set
 
 
-// current powerstate, after initialization this is POWERSTATE_ON for background operations
+// holds the current powerstate
 // note: this variable is never set to POWERSTATE_SLEEP (makes no sense, since it cannot be read while sleeping)
 int powerstate = POWERSTATE_ON;
 
@@ -40,7 +40,8 @@ void wakeTimer() {
  * Handles the low-level sleep stuff.
  * Disables I2C, ADC, enables interrupts and switches to deepest sleepmode.
  * Does not check for set timers.
- * Blocks until sleep is over
+ * Blocks until sleep is over.
+ * Read wakeReason after this function returns to find out what caused the wakeup (user or timer).
  */
 void deepsleep_internal() {
   // disable I2C
@@ -49,16 +50,14 @@ void deepsleep_internal() {
   // disable I2C pullups
   digitalWrite (A4, LOW);
   digitalWrite (A5, LOW);
-  // disable SPI
-  
+  // disable power supply to rtc, the clock will now run on its internal power supply (battery)
   digitalWrite(P_RTC_POWER, LOW);
   pinMode(P_RTC_POWER, INPUT);
-  //digitalWrite(10, HIGH);
   
   // disable ADC subsystem
   ADCSRA = 0; 
   
-  // deepest sleepmode
+  // choose deepest sleepmode
   set_sleep_mode (SLEEP_MODE_PWR_DOWN);  
   sleep_enable();
   
@@ -66,7 +65,7 @@ void deepsleep_internal() {
   // ISR will detach interrupts and we won't wake.
   noInterrupts ();
 
-  // will be called when pin D2 goes low  
+  // setup timers so the device can be woken up from sleep
   attachInterrupt(0, wakeLight, LOW);
   attachInterrupt(1, wakeTimer, LOW);
 
@@ -76,12 +75,13 @@ void deepsleep_internal() {
   interrupts();
   sleep_cpu ();    // sleep within 3 clock cycles of above
   
+  // the previous funciton/marco blocks until sleep is over.
+  // from this point on, the system is woken up again
+
   // re-enable I2C & SPI
   PRR &= (1<<PRTIM0) | (1<<PRTIM1) | (1<<PRTIM2) | (1<<PRADC) | (1<<PRUSART0);
 
   disableAlarm();
-
-  // begin re-enabling stuff
   // power rtc
   digitalWrite (P_RTC_POWER, HIGH);
   
@@ -89,7 +89,7 @@ void deepsleep_internal() {
 }
 
 /**
- * Switches to another (active) powerstate.
+ * Switches to another powerstate.
  * Cannot switch to sleep!
  */
 void gotoActivePowerstate(uint8_t nextPowerstate) {
@@ -170,16 +170,16 @@ void gotoActivePowerstate(uint8_t nextPowerstate) {
 
 /**
  * Puts the device into deepsleep, preserving power.
- * Calls timer functions to guarantee a wakeup withing the next hour.
- * Blocks until sleeping is over. (max 1h)
+ * Calls timer functions to guarantee a wakeup on alarm.
+ * Blocks until sleeping is over.
  * Returns the reason for wakeup.
- * This is either WAKEREASON_LIGHT or WAKEREASON_TIMER
+ * This is either WAKEREASON_LIGHT or WAKEREASON_TIMER.
  */
 uint8_t deepsleep() {
   // goto lowest powerstate first
   gotoActivePowerstate(POWERSTATE_ON);
 
-  // ensure wakeup within the next hour
+  // ensure wakeup
   resetWakeupTimer();
 
   // do real sleeping

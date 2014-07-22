@@ -46,7 +46,13 @@
 /*
  * Setup inputs.
  * First thing to be executed after startup to limit power consumption and prevent damage to sensitive devices.
- * After this setup all pins are configured and all devices (except RTC) are powered down
+ * After this setup all pins are configured and all devices (except RTC) are powered down.
+ *
+ * Note that these settings work ok as a safe initial configuraion, but
+ * should be replaced very soon by the power manager code.
+ * The reason is that some devices (sd-card, audio) require a more complex setup
+ * to archive the desired minimum. Apparently there is some current leaking over the interface pins (I2C, SPI)
+ * when these devices are just turned off by cutting their power supply.
  */
 void setupPins() {
   // set everything
@@ -67,8 +73,8 @@ void setupPins() {
   // disable everything except rtc
   digitalWrite(P_DISPLAY_POWER, LOW);
   digitalWrite(P_DCF_POWER, LOW);
-  digitalWrite(P_AUDIO_SHUTDOWN, LOW);//low active TODO: Check!
-  digitalWrite(P_AUDIO_OUTPUT, LOW);// use pwm? TODO: Check!
+  digitalWrite(P_AUDIO_SHUTDOWN, LOW)
+  digitalWrite(P_AUDIO_OUTPUT, LOW)
   digitalWrite(P_SD_CS, LOW);
   digitalWrite(P_SD_POWER, LOW);
 

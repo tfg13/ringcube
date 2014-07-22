@@ -1,5 +1,11 @@
 #include "Arduino.h"
 
+/**
+ * Contains most (but not all) of the gui-code
+ * that displays the menus and reads the user input.
+ */
+
+
 void toggleAlarmMenu() {
   // toggle between current alarm time and status every second
   long start = 0;
