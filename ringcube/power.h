@@ -37,6 +37,26 @@ void wakeTimer() {
 }
 
 /**
+ * Simple method to measure Vcc in mV without any external components.
+ * According to the internet(TM) this may not be super precise.
+ * Since the main purpose of this is doing long-term surveillance
+ * battery voltage the actual value does not matter that much.
+ * Source: https://code.google.com/p/tinkerit/wiki/SecretVoltmeter
+ */
+long readVcc() {
+  long result;
+  // Read 1.1V reference against AVcc
+  ADMUX = _BV(REFS0) | _BV(MUX3) | _BV(MUX2) | _BV(MUX1);
+  delay(2); // Wait for Vref to settle
+  ADCSRA |= _BV(ADSC); // Convert
+  while (bit_is_set(ADCSRA,ADSC));
+  result = ADCL;
+  result |= ADCH<<8;
+  result = 1126400L / result; // Back-calculate AVcc in mV
+  return result;
+}
+
+/**
  * Handles the low-level sleep stuff.
  * Disables I2C, ADC, enables interrupts and switches to deepest sleepmode.
  * Does not check for set timers.
@@ -80,6 +100,9 @@ void deepsleep_internal() {
 
   // re-enable I2C & SPI
   PRR &= (1<<PRTIM0) | (1<<PRTIM1) | (1<<PRTIM2) | (1<<PRADC) | (1<<PRUSART0);
+
+  // re-enabled ADC
+  ADCSRA = (1<<ADEN);
 
   // power rtc
   digitalWrite (P_RTC_POWER, HIGH);

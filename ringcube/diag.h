@@ -152,3 +152,9 @@ void diagOSF() {
     manualControl(3, 0b01110001);//F
   }
 }
+
+void displayVoltage() {
+  // dot after first digit
+  setSpecialSymbol(false, 1, false);
+  displayFull(readVcc());
+}

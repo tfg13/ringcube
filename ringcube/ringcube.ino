@@ -117,6 +117,8 @@ void loop() {
 	displayStart = millis();
       } else if (digitalRead(I_LEFT) == LOW) {
 	debounce(I_LEFT);
+        displayVoltage();
+        delay(2000);
 	//showStatus();
 	// back from showing status, reset display timer
 	setSpecialSymbol(true, 0, false);
