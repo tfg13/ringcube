@@ -188,12 +188,12 @@ int getDCFTime() {
     // expected minute mark
     return -1;
   }
-  // wait for rising edge of second-1 mark
+  // wait for rising edge of second-0 mark
   long sync = millis();
   while (1) {
     if (digitalRead(P_DCF_SIGNAL) == HIGH && hold(HIGH)) {
       // time reception complete
-      rtc.setSecond(1); // this completes time reception and syncs the second
+      rtc.setSecond(0); // this completes time reception and syncs the second
 #ifdef DEBUG_DCF
      displayFull(3333);
      delay(2000);
