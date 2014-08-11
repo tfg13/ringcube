@@ -34,6 +34,7 @@ int8_t alarmMinute = 0;
 #include "menus.h"
 #include "timers.h"
 #include "power.h"
+#include "diag.h"
 
 /**
  * Used for debouncing all buttons.
@@ -68,6 +69,15 @@ void setup() {
   setupPins();
   // first start is like pressing the light button
   waketrigger = WAKEREASON_LIGHT;
+  // diag/reset?
+  if (!digitalRead(I_MIDDLE) && !digitalRead(I_LEFT) && !digitalRead(I_RIGHT)) {
+    resetRTC();
+  }
+  if (!digitalRead(I_LEFT) && !digitalRead(I_RIGHT)) {
+    diag();
+  } else if (!digitalRead(I_MIDDLE) && !digitalRead(I_RIGHT)) {
+    diagOSF();
+  }
 }
 
 /**
