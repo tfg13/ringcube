@@ -83,6 +83,7 @@ void deepsleep_internal() {
 
   // power rtc
   digitalWrite (P_RTC_POWER, HIGH);
+  pinMode(P_RTC_POWER, OUTPUT);
   
   disableAlarm();
 }
