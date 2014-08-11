@@ -107,6 +107,7 @@ void gotoActivePowerstate(uint8_t nextPowerstate) {
       digitalWrite(P_AUDIO_OUTPUT, LOW);
       pinMode(P_AUDIO_OUTPUT, INPUT);
       digitalWrite(P_SD_CS, LOW);
+      SPI.end();
       digitalWrite(P_SD_POWER, LOW);
       digitalWrite(13, LOW);
       digitalWrite(12, LOW);
@@ -123,6 +124,7 @@ void gotoActivePowerstate(uint8_t nextPowerstate) {
       digitalWrite(P_AUDIO_OUTPUT, LOW);
       pinMode(P_AUDIO_OUTPUT, INPUT);
       digitalWrite(P_SD_CS, LOW);
+      SPI.end();
       digitalWrite(P_SD_POWER, LOW);
       digitalWrite(13, LOW);
       digitalWrite(12, LOW);
@@ -141,6 +143,8 @@ void gotoActivePowerstate(uint8_t nextPowerstate) {
       pinMode(12, OUTPUT);
       pinMode(11, OUTPUT);
       digitalWrite(P_SD_POWER, HIGH);
+      delay(2);// give sdcard time
+      SPI.begin();
       break;
     case POWERSTATE_DCF:
 #ifdef DEBUG_DCF
