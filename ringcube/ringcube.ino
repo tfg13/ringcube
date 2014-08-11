@@ -94,7 +94,6 @@ void loop() {
     delay(100);
     // show time + colon
     setSpecialSymbol(true, 0, false);
-    bool dummy;
     displayFull(rtc.getHour(dummy, dummy) * 100 + rtc.getMinute());
     // wait for user input
     long displayStart = millis();
