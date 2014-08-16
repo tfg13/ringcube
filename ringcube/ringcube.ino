@@ -137,6 +137,7 @@ void loop() {
     ring();
     // wait for light button
     while (digitalRead(I_LIGHT_INTERRUPT) == HIGH) {
+      manageMusic();
     }
     debounce(I_LIGHT_INTERRUPT);
     // silence, save power
