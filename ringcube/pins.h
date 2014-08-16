@@ -51,7 +51,8 @@
  * Note that these settings work ok as a safe initial configuraion, but
  * should be replaced very soon by the power manager code.
  * The reason is that some devices (sd-card, audio) require a more complex setup
- * to archive the desired minimum. Apparently there is some current leaking over the interface pins (I2C, SPI)
+ * to archive the desired minimum power consumtion.
+ * Apparently there is some current leaking over the interface pins (I2C, SPI)
  * when these devices are just turned off by cutting their power supply.
  */
 void setupPins() {
