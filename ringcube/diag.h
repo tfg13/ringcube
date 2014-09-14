@@ -135,6 +135,7 @@ void resetRTC() {
 #else
   delay(60000);
 #endif
+  rtc.reconfigureForAlarms();
   rtc.setA1Time(1, 0, 0, 0, 0, false, false, false);
   rtc.setA2Time(1, 0, 0, 0, false, false, false);
   rtc.turnOffAlarm(1);
