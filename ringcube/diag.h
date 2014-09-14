@@ -63,6 +63,15 @@ void diag() {
     manualControl(2, 0b01110001);//F
     manualControl(3, 0b01110001);//F
   }
+  delay(1000);
+  if (rtc.checkIfAlarm(1)) {
+    manualControl(2, 0b00111111);//O
+    manualControl(3, 0b00110111);//N
+  } else {
+    manualControl(1, 0b00111111);//O
+    manualControl(2, 0b01110001);//F
+    manualControl(3, 0b01110001);//F
+  }
   // display alarm 2 time
   delay(1000);
   rtc.getA2Time(day, hour, minute, bits, dy, h12, pm);
@@ -80,6 +89,15 @@ void diag() {
   // display alarm 2 status
   delay(1000);
   if (rtc.checkAlarmEnabled(2)) {
+    manualControl(2, 0b00111111);//O
+    manualControl(3, 0b00110111);//N
+  } else {
+    manualControl(1, 0b00111111);//O
+    manualControl(2, 0b01110001);//F
+    manualControl(3, 0b01110001);//F
+  }
+  delay(1000);
+  if (rtc.checkIfAlarm(2)) {
     manualControl(2, 0b00111111);//O
     manualControl(3, 0b00110111);//N
   } else {
