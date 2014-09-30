@@ -136,6 +136,10 @@ void loop() {
 	  snooze = false;
 	  alarmHour = snoozeAlarmHour;
 	  alarmMinute = snoozeAlarmMinute;
+          manualControl(1, 0b00111111);//O
+	  manualControl(2, 0b01110001);//F
+	  manualControl(3, 0b01110001);//F
+	  delay(1000);
 	  break;
 	}
       }

@@ -23,12 +23,12 @@ void toggleAlarmMenu() {
     // wait for further input (half second)
     long start = millis();
     while (1) {
-      if (millis() - start > 500) {
+      if (millis() - start > 750) {
 	// alarm setting complete
 	// if alarm is on, show time again before leaving
 	if (alarm) {
 	  displayFull(alarmHour * 100 + alarmMinute);
-	  delay(500);
+	  delay(750);
 	}
 	// back to main menu
 	return;
@@ -222,8 +222,8 @@ void quickSetAlarm() {
   clearDisplay();
   manualControl(2, 0b00111111);//O
   manualControl(3, 0b00110111);//N
-  delay(500);
+  delay(750);
   displayFull(alarmHour * 100 + alarmMinute);
-  delay(500);
+  delay(750);
   // back
 }
