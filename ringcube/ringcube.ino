@@ -44,18 +44,27 @@ int8_t alarmMinute = 0;
  *
  * Works for all buttons that are low-active (which are all).
  * Supply the pressed button as the first argument.
+ *
+ * Ignore the return value for standard debouncing.
+ * Returns true, if the button was successfully released within about 1 second.
+ * If false is returned, the button may still be pressed. This is usefull for detecting
+ * "long" clicks. It is recommended to call this method again after detecting a long click
+ * to make sure the button is correctly debounced.
  */
-void debounce(int pin) {
+bool debounce(int pin) {
   delay(10);
   // wait for button release
   long start = millis();
-  while (millis() - start < 1990) {
+  bool result = false;
+  while (millis() - start < 990) {
     if (digitalRead(pin) == HIGH) {
+      result = true;
       break;
     }
   }
   // ignore falling edges for a moment
   delay(25);
+  return result;
 }
 
 /**
@@ -102,8 +111,13 @@ void loop() {
 	break;
       }
       if (digitalRead(I_MIDDLE) == LOW) {
-	debounce(I_MIDDLE);
-	setAlarmMenu();
+	if (debounce(I_MIDDLE)) {
+	  // normal click, go to set alarm time menu
+	  setAlarmMenu();
+	} else {
+	  // long click - quick set alarm
+	  quickSetAlarm();
+	}
 	// back from menu, reset display timer
 	setSpecialSymbol(true, 0, false);
 	displayFull(rtc.getHour(dummy, dummy) * 100 + rtc.getMinute());

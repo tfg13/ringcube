@@ -187,3 +187,43 @@ void setAlarmMenu() {
     }
   }
 }
+
+// sets the alarm to ~8 hours from now
+// rounds the minutes to 0, 15, 30 or 45.
+// also enables the alarm
+void quickSetAlarm() {
+  alarmHour = rtc.getHour(dummy, dummy);
+  alarmMinute = rtc.getMinute();
+  // plus 8 hours
+  alarmHour += 8;
+  if (alarmHour > 23) {
+    alarmHour -= 24;
+  }
+  // simplify minute
+  if (alarmMinute > 52) {
+    // round to next full hour
+    alarmMinute = 0;
+    alarmHour++;
+    if (alarmHour == 24) {
+      alarmHour = 0;
+    }
+  } else if (alarmMinute < 9) {
+    // round to previous full hour
+    alarmMinute = 0;
+  } else if (alarmMinute >= 9 && alarmMinute <= 22) {
+    alarmMinute = 15;
+  } else if (alarmMinute > 22 && alarmMinute < 39) {
+    alarmMinute = 30;
+  } else if (alarmMinute >= 39) {
+    alarmMinute = 45;
+  }
+  alarm = true;
+  // show new status, ON + time
+  clearDisplay();
+  manualControl(2, 0b00111111);//O
+  manualControl(3, 0b00110111);//N
+  delay(500);
+  displayFull(alarmHour * 100 + alarmMinute);
+  delay(500);
+  // back
+}
