@@ -7,9 +7,10 @@
 
 
 void toggleAlarmMenu() {
-  // toggle between current alarm time and status every second
-  long start = 0;
   while (1) {
+    // toggle alarm state
+    alarm = !alarm;
+    // show status
     clearDisplay();
     if (alarm) {
       manualControl(2, 0b00111111);//O
@@ -19,53 +20,22 @@ void toggleAlarmMenu() {
       manualControl(2, 0b01110001);//F
       manualControl(3, 0b01110001);//F
     }
-    // wait 1 sec (or act on left or right key press)
-    bool key = false;
+    // wait for further input (half second)
     start = millis();
     while (1) {
-      if (millis() - start > 1000) {
-	break;
-      }
-      if (digitalRead(I_LEFT) == LOW) {
-	debounce(I_LEFT);
-	alarm = !alarm;
-	start = millis();
-	key = true;
-	break;
+      if (millis() - start > 500) {
+	// alarm setting complete
+	// if alarm is on, show time again before leaving
+	if (alarm) {
+	  displayFull(alarmHour * 100 + alarmMinute);
+	  delay(500);
+	}
+	// back to main menu
+	return;
       } else if (digitalRead(I_RIGHT) == LOW) {
 	debounce(I_RIGHT);
-	alarm = !alarm;
-	start = millis();
-	key = true;
+	// toggle again (continue outer loop)
 	break;
-      } else if (digitalRead(I_MIDDLE) == LOW) {
-	debounce(I_MIDDLE);
-	return;
-      }
-    }
-    // immediately display new status after change
-    if (key) {
-      continue;
-    }
-    displayFull(alarmHour * 100 + alarmMinute);
-    start = millis();
-    while (1) {
-      if (millis() - start > 1000) {
-	break;
-      }
-      if (digitalRead(I_LEFT) == LOW) {
-	debounce(I_LEFT);
-	alarm = !alarm;
-	start = millis();
-	break;
-      } else if (digitalRead(I_RIGHT) == LOW) {
-	debounce(I_RIGHT);
-	alarm = !alarm;
-	start = millis();
-	break;
-      } else if (digitalRead(I_MIDDLE) == LOW) {
-	debounce(I_MIDDLE);
-	return;
       }
     }
   }
