@@ -113,13 +113,13 @@ void loop() {
     if (snooze) {
       // still snoozing, so the alarm is technically still on.
       // 2 seconds to disable it by pressing any button
-      start = millis();
+      long start = millis();
       while (1) {
 	if (millis() - start > 2000) {
 	  // back to sleep
 	  break;
-	} else if (digitalRead(I_LIGHT) == LOW) {
-	  debounce(I_LIGHT);
+	} else if (digitalRead(I_LIGHT_INTERRUPT) == LOW) {
+	  debounce(I_LIGHT_INTERRUPT);
 	  alarm = false;
 	} else if (digitalRead(I_RIGHT) == LOW) {
 	  debounce(I_RIGHT);

@@ -21,7 +21,7 @@ void toggleAlarmMenu() {
       manualControl(3, 0b01110001);//F
     }
     // wait for further input (half second)
-    start = millis();
+    long start = millis();
     while (1) {
       if (millis() - start > 500) {
 	// alarm setting complete
