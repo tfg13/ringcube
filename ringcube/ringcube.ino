@@ -30,6 +30,11 @@ bool alarm = false;
 int8_t alarmHour = 0;
 // minute of the alarm
 int8_t alarmMinute = 0;
+// true while snoozing
+bool snooze = false;
+// holds the origin alarm time while snoozing
+int8_t snoozeAlarmHour = 0;
+int8_t snoozeAlarmMinute = 0;
 
 #include "menus.h"
 #include "timers.h"
@@ -97,47 +102,81 @@ void loop() {
   // device just woke up from deepsleep.
   // find out the reason for this
   if (waketrigger == WAKEREASON_LIGHT) {
-    // light button. display the time and wait for input.
+    // light button, display the time and wait for input.
     // sleep soon if nothing happens
     gotoActivePowerstate(POWERSTATE_DISPLAY);
     delay(100);
     // show time + colon
     setSpecialSymbol(true, 0, false);
     displayFull(rtc.getHour(dummy, dummy) * 100 + rtc.getMinute());
-    // wait for user input
-    long displayStart = millis();
-    while (1) {
-      if (millis() - displayStart > 2000) {
-	break;
-      }
-      if (digitalRead(I_MIDDLE) == LOW) {
-	if (debounce(I_MIDDLE)) {
-	  // normal click, go to set alarm time menu
-	  setAlarmMenu();
-	} else {
-	  // long click - quick set alarm
-	  quickSetAlarm();
+
+    if (snooze) {
+      // still snoozing, so the alarm is technically still on.
+      // 2 seconds to disable it by pressing any button
+      start = millis();
+      while (1) {
+	if (millis() - start > 2000) {
+	  // back to sleep
+	  break;
+	} else if (digitalRead(I_LIGHT) == LOW) {
+	  debounce(I_LIGHT);
+	  alarm = false;
+	} else if (digitalRead(I_RIGHT) == LOW) {
+	  debounce(I_RIGHT);
+	  alarm = false;
+	} else if (digitalRead(I_MIDDLE) == LOW) {
+	  debounce(I_MIDDLE);
+	  alarm = false;
+	} else if (digitalRead(I_LEFT) == LOW) {
+	  debounce(I_LEFT);
+	  alarm = false;
 	}
-	// back from menu, reset display timer
-	setSpecialSymbol(true, 0, false);
-	displayFull(rtc.getHour(dummy, dummy) * 100 + rtc.getMinute());
-	displayStart = millis();
-      } else if (digitalRead(I_RIGHT) == LOW) {
-	debounce(I_RIGHT);
-	toggleAlarmMenu();
-	// back from menu, reset display timer
-	setSpecialSymbol(true, 0, false);
-	displayFull(rtc.getHour(dummy, dummy) * 100 + rtc.getMinute());
-	displayStart = millis();
-      } else if (digitalRead(I_LEFT) == LOW) {
-	debounce(I_LEFT);
-        displayVoltage();
-        delay(2000);
-	//showStatus();
-	// back from showing status, reset display timer
-	setSpecialSymbol(true, 0, false);
-	displayFull(rtc.getHour(dummy, dummy) * 100 + rtc.getMinute());
-	displayStart = millis();
+	if (!alarm) {
+	  // was turned off, disable snooze
+	  snooze = false;
+	  alarmHour = snoozeAlarmHour;
+	  alarmMinute = snoozeAlarmMinute;
+	  break;
+	}
+      }
+    }
+    // only enter main screen if snoozing is (now) off
+    if (!snooze) {
+      // wait for user input
+      long displayStart = millis();
+      while (1) {
+	if (millis() - displayStart > 2000) {
+	  break;
+	}
+	if (digitalRead(I_MIDDLE) == LOW) {
+	  if (debounce(I_MIDDLE)) {
+	    // normal click, go to set alarm time menu
+	    setAlarmMenu();
+	  } else {
+	    // long click - quick set alarm
+	    quickSetAlarm();
+	  }
+	  // back from menu, reset display timer
+	  setSpecialSymbol(true, 0, false);
+	  displayFull(rtc.getHour(dummy, dummy) * 100 + rtc.getMinute());
+	  displayStart = millis();
+	} else if (digitalRead(I_RIGHT) == LOW) {
+	  debounce(I_RIGHT);
+	  toggleAlarmMenu();
+	  // back from menu, reset display timer
+	  setSpecialSymbol(true, 0, false);
+	  displayFull(rtc.getHour(dummy, dummy) * 100 + rtc.getMinute());
+	  displayStart = millis();
+	} else if (digitalRead(I_LEFT) == LOW) {
+	  debounce(I_LEFT);
+	  displayVoltage();
+	  delay(2000);
+	  //showStatus();
+	  // back from showing status, reset display timer
+	  setSpecialSymbol(true, 0, false);
+	  displayFull(rtc.getHour(dummy, dummy) * 100 + rtc.getMinute());
+	  displayStart = millis();
+	}
       }
     }
   } else if (waketrigger == WAKEREASON_TIMER) {
@@ -167,7 +206,13 @@ void loop() {
     long alarmOffTimer = millis();
     while (1) {
       if (millis() - alarmOffTimer > 3000) {
-	// snooze!
+	// first snooze?
+	if (!snooze) {
+	  snooze = true;
+	  // preserve time
+	  snoozeAlarmHour = alarmHour;
+	  snoozeAlarmMinute = alarmMinute;
+	}
 	// move alarm 3 minutes to the future
 	if (alarmMinute < 57) {
 	  alarmMinute += 3;
@@ -185,6 +230,13 @@ void loop() {
       if (digitalRead(I_LIGHT_INTERRUPT) == LOW) {
 	// disable alarm
 	alarm = false;
+	// was snoozing?
+	if (snooze) {
+	  snooze = false;
+	  // reset original alarm time
+	  alarmHour = snoozeAlarmHour;
+	  alarmMinute = snoozeAlarmMinute;
+	}
 	clearDisplay();
 	manualControl(1, 0b00111111);//O
 	manualControl(2, 0b01110001);//F
