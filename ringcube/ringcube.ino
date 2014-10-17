@@ -109,6 +109,7 @@ void loop() {
     // show time + colon
     setSpecialSymbol(true, 0, false);
     displayFull(rtc.getHour(dummy, dummy) * 100 + rtc.getMinute());
+    debounce(I_LIGHT_INTERRUPT);
 
     if (snooze) {
       // still snoozing, so the alarm is technically still on.
