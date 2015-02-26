@@ -70,6 +70,9 @@ void deepsleep_internal() {
   // disable I2C pullups
   digitalWrite (A4, LOW);
   digitalWrite (A5, LOW);
+  // disable power supply to audio i2c
+  pinMode(P_AUDIO_IC2_POWER, INPUT);
+  digitalWrite(P_AUDIO_IC2_POWER, LOW);
   // disable power supply to rtc, the clock will now run on its internal power supply (battery)
   digitalWrite(P_RTC_POWER, LOW);
   pinMode(P_RTC_POWER, INPUT);
@@ -103,6 +106,10 @@ void deepsleep_internal() {
 
   // re-enabled ADC
   ADCSRA = (1<<ADEN);
+
+  // power audio i2c
+  pinMode(P_AUDIO_IC2_POWER, OUTPUT);
+  digitalWrite(P_AUDIO_IC2_POWER, HIGH);
 
   // power rtc
   digitalWrite (P_RTC_POWER, HIGH);

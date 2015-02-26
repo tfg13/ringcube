@@ -19,6 +19,7 @@
  */
 #define P_AUDIO_SHUTDOWN 8
 #define P_AUDIO_OUTPUT 9
+#define P_AUDIO_IC2_POWER 0
 // comms is I2C
 
 /*
@@ -62,6 +63,7 @@ void setupPins() {
   pinMode(P_DCF_SIGNAL, INPUT);
   pinMode(P_AUDIO_SHUTDOWN, OUTPUT);
   pinMode(P_AUDIO_OUTPUT, OUTPUT);
+  pinMode(P_AUDIO_IC2_POWER, OUTPUT);
   pinMode(P_RTC_INTERRUPT, INPUT);
   pinMode(P_RTC_POWER, OUTPUT);
   pinMode(P_SD_CS, OUTPUT);
@@ -79,7 +81,8 @@ void setupPins() {
   digitalWrite(P_SD_CS, LOW);
   digitalWrite(P_SD_POWER, LOW);
 
-  // explicitly enable rtc
+  // explicitly enable rtc & audio i2c power
+  digitalWrite(P_AUDIO_IC2_POWER, HIGH);
   digitalWrite(P_RTC_POWER, HIGH);
   // enable I2C
   Wire.begin();
