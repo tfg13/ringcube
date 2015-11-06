@@ -10,9 +10,11 @@
  * While this is not implemented at this point it may be in the future.
  */
 void resetWakeupTimer() {
+  // retrieve alarm flag (according to the datasheet, this should be done before touching the alarm flag)
+  rtc.checkIfAlarm(2);
   // only 1 timer for now
   if (alarm) {
-    rtc.setA2Time(0, alarmHour, alarmMinute, 0b01000000, false, false, false);
+    rtc.setA2Time(1, alarmHour, alarmMinute, 0b01000000, false, false, false);
     rtc.turnOnAlarm(2);
   } else {
     rtc.turnOffAlarm(2);
