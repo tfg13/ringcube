@@ -50,8 +50,8 @@ void diag() {
   delay(1000);
   byte flags = 0;
   flags |= dy;
-  flags |= h12 < 1;
-  flags |= pm < 2;
+  flags |= h12 << 1;
+  flags |= pm << 2;
   displayFull(flags);
   // display alarm 1 status
   delay(1000);
@@ -83,8 +83,8 @@ void diag() {
   delay(1000);
   flags = 0;
   flags |= dy;
-  flags |= h12 < 1;
-  flags |= pm < 2;
+  flags |= h12 << 1;
+  flags |= pm << 2;
   displayFull(flags);
   // display alarm 2 status
   delay(1000);
