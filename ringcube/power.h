@@ -127,6 +127,10 @@ void gotoActivePowerstate(uint8_t nextPowerstate) {
     // use deepsleep for this
     return;
   }
+  if (nextPowerstate == powerstate) {
+      // nothing to do
+      return;
+  }
   switch (nextPowerstate) {
     case POWERSTATE_ON:
       // disable everything except rtc

@@ -5,6 +5,8 @@
  * 
  * - oscillator status (must be ON)
  * - current time HH:MM
+ * - control register values
+ * - status register values
  * - A1 day
  * - A1 HH:MM
  * - A1 second
@@ -21,8 +23,6 @@
  */
 
 void diag() {
-  gotoActivePowerstate(POWERSTATE_DISPLAY);
-  delay(100);
   // display OSF (oscillator stop flag)
   if (rtc.oscillatorCheck()) {
     manualControl(2, 0b00111111);//O
@@ -33,28 +33,34 @@ void diag() {
     manualControl(3, 0b01110001);//F
   }
   // display current time according to rtc
-  delay(1000);
+  delay(2000);
   displayFull(rtc.getHour(dummy, dummy) * 100 + rtc.getMinute());
+  delay(2000);
+  // display status, control register
+  byte reg = 0;
+  displayFull(rtc.readControlByte(0));
+  delay(2000);
+  displayFull(rtc.readControlByte(1));
   // display alarm 1 time
-  delay(1000);
+  delay(2000);
   byte day, hour, minute, second, bits;
   bool dy, h12, pm;
   rtc.getA1Time(day, hour, minute, second, bits, dy, h12, pm);
   displayFull(day);
-  delay(1000);
+  delay(2000);
   displayFull(hour * 100 + minute);
-  delay(1000);
+  delay(2000);
   displayFull(second);
-  delay(1000);
+  delay(2000);
   displayFull(bits);
-  delay(1000);
+  delay(2000);
   byte flags = 0;
   flags |= dy;
   flags |= h12 << 1;
   flags |= pm << 2;
   displayFull(flags);
   // display alarm 1 status
-  delay(1000);
+  delay(2000);
   if (rtc.checkAlarmEnabled(1)) {
     manualControl(2, 0b00111111);//O
     manualControl(3, 0b00110111);//N
@@ -63,7 +69,7 @@ void diag() {
     manualControl(2, 0b01110001);//F
     manualControl(3, 0b01110001);//F
   }
-  delay(1000);
+  delay(2000);
   if (rtc.checkIfAlarm(1)) {
     manualControl(2, 0b00111111);//O
     manualControl(3, 0b00110111);//N
@@ -73,21 +79,21 @@ void diag() {
     manualControl(3, 0b01110001);//F
   }
   // display alarm 2 time
-  delay(1000);
+  delay(2000);
   rtc.getA2Time(day, hour, minute, bits, dy, h12, pm);
   displayFull(day);
-  delay(1000);
+  delay(2000);
   displayFull(hour * 100 + minute);
-  delay(1000);
+  delay(2000);
   displayFull(bits);
-  delay(1000);
+  delay(2000);
   flags = 0;
   flags |= dy;
   flags |= h12 << 1;
   flags |= pm << 2;
   displayFull(flags);
   // display alarm 2 status
-  delay(1000);
+  delay(2000);
   if (rtc.checkAlarmEnabled(2)) {
     manualControl(2, 0b00111111);//O
     manualControl(3, 0b00110111);//N
@@ -96,7 +102,7 @@ void diag() {
     manualControl(2, 0b01110001);//F
     manualControl(3, 0b01110001);//F
   }
-  delay(1000);
+  delay(2000);
   if (rtc.checkIfAlarm(2)) {
     manualControl(2, 0b00111111);//O
     manualControl(3, 0b00110111);//N
@@ -106,14 +112,15 @@ void diag() {
     manualControl(3, 0b01110001);//F
   }
   // display temp
-  delay(1000);
+  delay(2000);
   byte temp = (byte) rtc.getTemperature();
   displayFull(temp);
+  delay(2000);
   
   // display seconds for ever
   while (1) {
-    delay(1000);
     displayFull(rtc.getSecond());
+    delay(1000);
   }
 }
 

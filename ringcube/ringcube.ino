@@ -2,6 +2,7 @@
 #include <Time.h>
 
 #define DEBUG_DCF
+#define DEBUG_RTC
 
 #include "pins.h"
 #include "constants.h"
@@ -88,6 +89,8 @@ void setup() {
     resetRTC();
   }
   if (!digitalRead(I_LEFT) && !digitalRead(I_RIGHT)) {
+    gotoActivePowerstate(POWERSTATE_DISPLAY);
+    delay(100);
     diag();
   } else if (!digitalRead(I_MIDDLE) && !digitalRead(I_RIGHT)) {
     diagOSF();
@@ -200,7 +203,15 @@ void loop() {
     while (digitalRead(I_LIGHT_INTERRUPT) == HIGH) {
       manageMusic();
     }
+#ifdef DEBUG_RTC
+    if (!debounce(I_LIGHT_INTERRUPT)) {
+        // long press = diag
+        clearDisplay();
+        diag();
+    }
+#else
     debounce(I_LIGHT_INTERRUPT);
+#endif // DEBUG_RTC
     // silence, save power
     silence();
     gotoActivePowerstate(POWERSTATE_DISPLAY);
