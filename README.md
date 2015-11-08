@@ -30,3 +30,10 @@ Several additional arduino libraries are required to compile the software:
 * https://github.com/tfg13/TMRpcm (to play music from the sd card)
 * https://github.com/adafruit/Adafruit-TPA2016-Library (to control the amplifier)
 * https://github.com/greiman/SdFat (to access the sd card (official sd library cannot handle re-opening the card after sleep))
+
+License:
+
+* My code: Apache 2.0 (see LICENSE_code)
+* Design for case, circuit: CC4 (see LICENSE_case_circuit)
+
+(c) 2014-2015 Tobias Fleig - All Rights Reserved
